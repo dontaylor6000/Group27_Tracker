@@ -1,3 +1,4 @@
 ~*
-Tracker_app/.idea/*
-Tracker_app/app/google-services.json
+Tracker/.idea/*
+Tracker/app/google-services.json
+Tracker/local.properties
