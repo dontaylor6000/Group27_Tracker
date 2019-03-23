@@ -7,8 +7,8 @@ import android.net.Uri;
 public class Email extends Activity {
     public void sendEmail(String userEmail, String userName, String trackerName) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setData(Uri.parse(userEmail));
-        emailIntent.setType("text/plain");
+
+        emailIntent.setDataAndType(Uri.parse(userEmail), "text/plain");
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Tracker " + trackerName + " : Battery Warning");
         emailIntent.putExtra(Intent.EXTRA_TEXT, userName + ",\n Battery power for Tracker " +
                 trackerName + " is below recommended levels. To ensure continued operation " +

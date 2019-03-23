@@ -8,13 +8,11 @@ import android.content.Intent;
 import java.util.Calendar;
 
 public class Alarm {
-    private AlarmManager manager;
-    private PendingIntent alarmIntent;
 
     public void setAlarm(Context context, int month, int day, int hour, int minute) {
-        manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, Alarm.class);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.MONTH, month);
