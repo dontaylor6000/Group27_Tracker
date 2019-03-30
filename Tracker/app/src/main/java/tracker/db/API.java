@@ -1,5 +1,6 @@
 package tracker.db;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
@@ -101,6 +102,7 @@ public class API {
         });
     }
 
+    @TargetApi(28)
     public static String encrypt(String str) {
 
         byte[] encrypted;
