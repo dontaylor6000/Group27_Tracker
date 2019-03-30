@@ -1,36 +1,32 @@
 package tracker.db;
 
+import android.os.Build;
+import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import androidx.annotation.NonNull;
 
 
 public class API {
 
     private static final String TAG = "Database API";
-    private FirebaseDatabase db;
     private DatabaseReference alerts;
     private DatabaseReference allowedLocation;
-    private DatabaseReference mappingToAllowed;
     private DatabaseReference network;
     private DatabaseReference patient;
     private DatabaseReference trackers;
 
     public API() {
 
-        this.db = FirebaseDatabase.getInstance();
-        this.alerts = this.db.getReference("Alerts");
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        this.alerts = db.getReference("Alerts");
         this.alerts.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -43,7 +39,7 @@ public class API {
 
             }
         });
-        this.allowedLocation = this.db.getReference("AllowedLocation");
+        this.allowedLocation = db.getReference("AllowedLocation");
         this.allowedLocation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -55,8 +51,8 @@ public class API {
 
             }
         });
-        this.mappingToAllowed = this.db.getReference("MappingToAllowed");
-        this.mappingToAllowed.addValueEventListener(new ValueEventListener() {
+        DatabaseReference mappingToAllowed = db.getReference("MappingToAllowed");
+        mappingToAllowed.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -67,7 +63,7 @@ public class API {
 
             }
         });
-        this.network = this.db.getReference("Network");
+        this.network = db.getReference("Network");
         this.network.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,7 +75,7 @@ public class API {
 
             }
         });
-        this.patient = this.db.getReference("Patient");
+        this.patient = db.getReference("Patient");
         this.patient.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,7 +87,7 @@ public class API {
 
             }
         });
-        this.trackers = this.db.getReference("Trackers");
+        this.trackers = db.getReference("Trackers");
         this.trackers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,6 +105,10 @@ public class API {
 
         byte[] encrypted;
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            //Need to solve compatibility problem with KITKAT
+        }
+
         try {
             byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
             SecretKeySpec key = new SecretKeySpec(bytes, "AES");
@@ -121,8 +121,7 @@ public class API {
             ex.printStackTrace();
             encrypted = new byte[0];
         }
-        String enc_str = new String(encrypted, StandardCharsets.UTF_8);
-        return enc_str;
+        return new String(encrypted, StandardCharsets.UTF_8);
     }
 
     public void addToDb(String cls, Object... args) {

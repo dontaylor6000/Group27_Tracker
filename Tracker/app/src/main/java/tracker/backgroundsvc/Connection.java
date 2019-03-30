@@ -5,12 +5,11 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 
 public class Connection {
-    private ServerSocket sock;
 
     public Connection(int port, int backlog, InetAddress addr) {
         try {
-            this.sock = new ServerSocket(port, backlog, addr);
-            this.sock.accept();
+            ServerSocket sock = new ServerSocket(port, backlog, addr);
+            sock.accept();
         } catch (IOException e) {
 
         }
