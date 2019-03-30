@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".fragment1" />
+        <activity android:name=".fragment2" />
+        <activity android:name=".fragment3" />
+        <activity android:name=".fragment4"></activity>
     </application>
 
 </manifest>
