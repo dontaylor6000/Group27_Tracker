@@ -7,7 +7,7 @@
         android:title="@string/title_tracker" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_person"
         android:icon="@drawable/fui_ic_anonymous_white_24dp"
         android:title="@string/title_person" />
 

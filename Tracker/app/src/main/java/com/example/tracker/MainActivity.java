@@ -21,17 +21,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
+
                 case R.id.navigation_tracker:
                     mTextMessage.setText(R.string.title_tracker);
                     return true;
+
                 case R.id.navigation_person:
                     mTextMessage.setText(R.string.title_person);
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
-                case R.id.navigation_map:
+               case R.id.navigation_map:
                     mTextMessage.setText(R.string.title_map);
                     return true;
+
             }
             return false;
         }

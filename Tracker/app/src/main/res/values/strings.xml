@@ -7,5 +7,6 @@
     <string name="title_notifications">Map</string>
     <string name="title_map">Alert</string>
     <string name="title_activity_information">informationAct</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
