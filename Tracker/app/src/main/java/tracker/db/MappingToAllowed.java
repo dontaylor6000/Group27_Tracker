@@ -3,30 +3,30 @@ package tracker.db;
 
 class MappingToAllowed {
 
-    private int trackerId;
-    private int restrictedId;
+    private String trackerId;
+    private String restrictedId;
 
     public MappingToAllowed() {
     }
 
-    public MappingToAllowed(int trackerId, int restrictedId) {
+    public MappingToAllowed(String trackerId, String restrictedId) {
         this.trackerId = trackerId;
         this.restrictedId = restrictedId;
     }
 
-    public int getTrackerId() {
+    public String getTrackerId() {
         return trackerId;
     }
 
-    public void setTrackerId(int trackerId) {
+    public void setTrackerId(String trackerId) {
         this.trackerId = trackerId;
     }
 
-    public int getRestrictedId() {
+    public String getRestrictedId() {
         return restrictedId;
     }
 
-    public void setRestrictedId(int restrictedId) {
+    public void setRestrictedId(String restrictedId) {
         this.restrictedId = restrictedId;
     }
 }

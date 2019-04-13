@@ -1,27 +1,140 @@
 package com.example.tracker;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.view.View;
+import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import tracker.backgroundsvc.InternetConnectionManager;
+import tracker.db.API;
+
+import java.util.Arrays;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
+    public static final int RC_SIGN_IN = 1;
+    private static final String TAG = "MainActivity";
+    private API dbapi;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase mFirebaseDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerReceiver(connectionChangeReceiver, new IntentFilter(
+                InternetConnectionManager.CONNECTIVITY_ACTION));
+        bindService(new Intent(this, InternetConnectionManager.class),
+                mICMConnection, Context.BIND_AUTO_CREATE);
+
         FirebaseApp.initializeApp(this);
-        setContentView(R.layout.activity_main);
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null){
+                    dbapi = new API(mFirebaseDatabase);
+                    //setContentView(R.id.home);
+                    //Toast.makeText(MainActivity.this, "Signed in! Welcome to Tracker", Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    List<AuthUI.IdpConfig> providers = Arrays.asList(
+                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                            new AuthUI.IdpConfig.GoogleBuilder().build());
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setIsSmartLockEnabled(false)
+                                    .setAvailableProviders(providers)
+                                    .build(),
+                            RC_SIGN_IN);
+                }
+            }
+        };
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
 
-    public void signIn(View v) {
-        Intent LoginIntent = new Intent(this, LoginActivity.class);
-        startActivity(LoginIntent);
+    private void setOnlineMode(boolean isOnline) {
+//        mapView.setModifiable(isOnline);
+//        locateButton.setEnabled(isOnline);
+//        addLocationButton.setEnabled(isOnline);
+
     }
 
-    public void signUp(View v) {
-        Intent SingUpIntent = new Intent(this, SignUpActivity.class);
-        startActivity(SingUpIntent);
+    private ServiceConnection mICMConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            InternetConnectionManager mManager = ((InternetConnectionManager.LocalBinder) service)
+                    .getService();
+            setOnlineMode(mManager.isOnline());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+
+    };
+
+    /**
+     * Receives notifications about connectivity changes
+     */
+    private BroadcastReceiver connectionChangeReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setOnlineMode((intent.getFlags() & InternetConnectionManager.ONLINE_FLAG)== InternetConnectionManager.ONLINE_FLAG);
+        }
+
+    };
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN){
+            if (resultCode == RESULT_OK){
+                Toast.makeText(this, "Logged in Successfully!", Toast.LENGTH_SHORT).show();
+            }
+            else if (resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Log-in cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+        Log.d(TAG, "Request Code" + requestCode);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
     }
 }

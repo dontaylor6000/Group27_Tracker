@@ -3,22 +3,22 @@ package tracker.db;
 import java.util.Date;
 
 public class Alerts {
-    private int trackerId;
+    private String trackerId;
     private Date datetime;
 
     public Alerts() {
     }
 
-    public Alerts(int trackerId, Date datetime) {
+    public Alerts(String trackerId, Date datetime) {
         this.trackerId = trackerId;
         this.datetime = datetime;
     }
 
-    public int getTrackerId() {
+    public String getTrackerId() {
         return trackerId;
     }
 
-    public void setTrackerId(int trackerId) {
+    public void setTrackerId(String trackerId) {
         this.trackerId = trackerId;
     }
 

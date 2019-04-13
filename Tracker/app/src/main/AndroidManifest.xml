@@ -4,6 +4,17 @@
     package="com.example.tracker"
     tools:ignore="GoogleAppIndexingWarning">
 
+    <!-- enables WiFi, if disabled, for the duration of a location request -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- used to obtain information about the WiFi environment -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- used to obtain cell tower ID -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <!-- used to access GPS location, for XPS functionality -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,25 +29,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ResetSentActivity">
-
-        </activity>
-        <activity android:name=".ForgetActivity">
-
-        </activity>
-        <activity android:name=".LoginActivity">
-
-        </activity>
-        <activity android:name=".SignUpActivity">
-
-        </activity>
-        <activity android:name=".UserProfile">
 
         </activity>
         <activity android:name="tracker.backgroundsvc.Email">
 
         </activity>
+
+        <service android:name="tracker.backgroundsvc.InternetConnectionManager" />
     </application>
 
 </manifest>
