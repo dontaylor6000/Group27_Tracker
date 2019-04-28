@@ -1,5 +1,15 @@
 <resources>
+
     <string name="app_name">Tracker</string>
+
     <string name="connection_online">Connected to Redpin server</string>
     <string name="connection_offline">Redpin server is not reachable</string>
+    <string name="title_tracker">Tracker</string>
+    <string name="title_person">Person</string>
+    <string name="title_notifications">Map</string>
+    <string name="title_map">Alert</string>
+    <string name="title_activity_information">informationAct</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_map_building">Map</string>
+
 </resources>

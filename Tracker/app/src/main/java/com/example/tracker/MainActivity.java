@@ -1,6 +1,7 @@
 package com.example.tracker;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,6 +16,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +28,6 @@ import tracker.db.API;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
     private static final String TAG = "MainActivity";
@@ -34,6 +36,33 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseDatabase mFirebaseDatabase;
 
+
+    private TextView mTextMessage;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+
+                case R.id.navigation_tracker:
+                    mTextMessage.setText(R.string.title_tracker);
+                    return true;
+
+                case R.id.navigation_person:
+                    mTextMessage.setText(R.string.title_person);
+                    return true;
+                case R.id.navigation_notifications:
+                    mTextMessage.setText(R.string.title_notifications);
+               case R.id.navigation_map:
+                    mTextMessage.setText(R.string.title_map);
+                    return true;
+
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     dbapi = new API(mFirebaseDatabase);
+                            setContentView(R.layout.activity_main);
+
+
+                   mTextMessage = (TextView) findViewById(R.id.message);
+                  BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
                     //setContentView(R.id.home);
                     //Toast.makeText(MainActivity.this, "Signed in! Welcome to Tracker", Toast.LENGTH_SHORT).show();
 
@@ -136,5 +171,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
+
     }
+
 }
