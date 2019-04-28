@@ -81,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     dbapi = new API(mFirebaseDatabase);
-                            setContentView(R.layout.activity_main);
-
-
-                   mTextMessage = (TextView) findViewById(R.id.message);
-                  BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-                  navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+                    setContentView(R.layout.activity_main);
+                    mTextMessage = (TextView) findViewById(R.id.message);
+                    BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
                     //setContentView(R.id.home);
                     //Toast.makeText(MainActivity.this, "Signed in! Welcome to Tracker", Toast.LENGTH_SHORT).show();
 
