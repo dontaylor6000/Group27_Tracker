@@ -3,12 +3,12 @@ package tracker.db;
 public class Patient {
     private String first;
     private String last;
-    private int locationId;
+    private String locationId;
 
     public Patient() {
     }
 
-    public Patient(String first, String last, int locationId) {
+    public Patient(String first, String last, String locationId) {
         this.first = first;
         this.last = last;
         this.locationId = locationId;
@@ -30,12 +30,17 @@ public class Patient {
         this.last = last;
     }
 
-    public int getLocationId() {
+    public String getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(int locationId) {
+    public void setLocationId(String locationId) {
         this.locationId = locationId;
+    }
+
+    public String toString(){
+        String retVal = "First: " + first + " Last: " + last + " LocationId: " + locationId;
+        return retVal;
     }
 }
 

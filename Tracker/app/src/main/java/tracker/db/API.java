@@ -2,12 +2,9 @@ package tracker.db;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.Cipher;
@@ -20,86 +17,69 @@ public class API {
     private static final String TAG = "Database API";
     private DatabaseReference alerts;
     private DatabaseReference allowedLocation;
+    private DatabaseReference mappingToAllowed;
     private DatabaseReference network;
     private DatabaseReference patient;
+
+    public DatabaseReference getAlerts() {
+        return alerts;
+    }
+
+    public void setAlerts(DatabaseReference alerts) {
+        this.alerts = alerts;
+    }
+
+    public DatabaseReference getAllowedLocation() {
+        return allowedLocation;
+    }
+
+    public void setAllowedLocation(DatabaseReference allowedLocation) {
+        this.allowedLocation = allowedLocation;
+    }
+
+    public DatabaseReference getMappingToAllowed() {
+        return mappingToAllowed;
+    }
+
+    public void setMappingToAllowed(DatabaseReference mappingToAllowed) {
+        this.mappingToAllowed = mappingToAllowed;
+    }
+
+    public DatabaseReference getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(DatabaseReference network) {
+        this.network = network;
+    }
+
+    public DatabaseReference getPatient() {
+        return patient;
+    }
+
+    public void setPatient(DatabaseReference patient) {
+        this.patient = patient;
+    }
+
+    public DatabaseReference getTrackers() {
+        return trackers;
+    }
+
+    public void setTrackers(DatabaseReference trackers) {
+        this.trackers = trackers;
+    }
+
     private DatabaseReference trackers;
 
-    public API() {
+    public API(FirebaseDatabase db) {
 
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        this.alerts = db.getReference("Alerts");
-        this.alerts.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
+        this.alerts = db.getReference().child("Alerts");
+        this.allowedLocation = db.getReference().child("AllowedLocation");
+        this.mappingToAllowed = db.getReference().child("MappingToAllowed");
+        this.network = db.getReference().child("Alerts");
+        this.patient = db.getReference().child("Patient");
+        this.trackers = db.getReference().child("Trackers");
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        this.allowedLocation = db.getReference("AllowedLocation");
-        this.allowedLocation.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        DatabaseReference mappingToAllowed = db.getReference("MappingToAllowed");
-        mappingToAllowed.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        this.network = db.getReference("Network");
-        this.network.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        this.patient = db.getReference("Patient");
-        this.patient.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        this.trackers = db.getReference("Trackers");
-        this.trackers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @TargetApi(28)
@@ -129,7 +109,7 @@ public class API {
     public void addToDb(String cls, Object... args) {
         switch (cls) {
             case "Alerts":
-                Alerts alert = new Alerts((int) args[0], (Date) args[1]);
+                Alerts alert = new Alerts((String) args[0], (Date) args[1]);
                 this.alerts.push().setValue(alert);
                 break;
             case "AllowedLocation":
@@ -142,7 +122,7 @@ public class API {
                 this.network.push().setValue(network);
                 break;
             case "Patient":
-                Patient patient = new Patient((String) args[0], (String) args[1], (int) args[2]);
+                Patient patient = new Patient((String) args[0], (String) args[1], (String) args[2]);
                 this.patient.push().setValue(patient);
                 break;
             case "Trackers":

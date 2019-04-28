@@ -2,3 +2,6 @@
 Tracker/.idea/*
 Tracker/app/google-services.json
 Tracker/local.properties
+redpin-master/local.properties
+redpin-master/redpin-master.iml
+redpin-master/.idea/encodings.xml
