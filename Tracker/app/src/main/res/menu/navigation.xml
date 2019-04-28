@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_tracker"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_tracker" />
+
+    <item
+        android:id="@+id/navigation_person"
+        android:icon="@drawable/fui_ic_anonymous_white_24dp"
+        android:title="@string/title_person" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_notifications" />
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/fui_ic_check_circle_black_128dp"
+        android:title="@string/title_map" />
+
+
+
+
+</menu>
